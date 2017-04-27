@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using TestWebRole.Models;
 using Microsoft.ServiceBus.Messaging;
@@ -50,6 +51,37 @@ namespace TestWebRole.Controllers
 
             return RedirectToAction("Index");
 
+        }
+
+        public ActionResult Process()
+        {
+            var connectionString = "Endpoint=sb://iqanstest1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=kACru3WDbVWYmD5GEFF81sLIsgi+eyR9fjeO6+NWYpY=";
+            var queueName = "MessagesQueue";
+            var list = new List<string>();
+
+            try
+            {
+                var client = QueueClient.CreateFromConnectionString(connectionString, queueName);
+
+                client.OnMessage(message =>
+                {
+                    list.Add(string.Format("Message id: {0}", message.MessageId));
+                    var msg = message.GetBody<CustomMessage>();
+                    list.Add("Message: ");
+                    list.Add("CustomerId: " + msg.CustomerId);
+                    list.Add("Name: " + msg.Name);
+                    list.Add("Message: " + msg.Message);
+
+                    message.Complete();
+                });
+                TempData["Output"] = list;
+            }
+            catch (Exception e)
+            {
+                TempData["Err"] = "Error: " + e.Message;
+            }
+            
+            return RedirectToAction("Index");
         }
     }
 }

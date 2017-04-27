@@ -38,7 +38,6 @@ namespace ConsoleWorkerRole
             {
                 Console.WriteLine("Error: "+ e.Message);
             }
-            Console.ReadLine();
         }
     }
 }

@@ -67,7 +67,6 @@ namespace TestWebRole.Controllers
                 {
                     list.Add(string.Format("Message id: {0}", message.MessageId));
                     var msg = message.GetBody<CustomMessage>();
-                    list.Add("Message: ");
                     list.Add("CustomerId: " + msg.CustomerId);
                     list.Add("Name: " + msg.Name);
                     list.Add("Message: " + msg.Message);

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using TestWebRole.Models;
+using Microsoft.ServiceBus.Messaging;
+using TestWebRole.Connector;
 
 namespace TestWebRole.Controllers
 {
@@ -10,21 +10,45 @@ namespace TestWebRole.Controllers
     {
         public ActionResult Index()
         {
+            try
+            {
+                // Get a NamespaceManager which allows you to perform management and
+                // diagnostic operations on your Service Bus queues.
+                var namespaceManager = QueueConnector.CreateNamespaceManager();
+
+                // Get the queue, and obtain the message count.
+                var queue = namespaceManager.GetQueue(QueueConnector.QueueName);
+                ViewBag.MessageCount = queue.MessageCount;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Result = "Error: " + e.Message;
+                ViewBag.MessageCount = 0;
+            }
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Index(CustomMessage custMessage)
         {
-            ViewBag.Message = "Your application description page.";
+            if (!ModelState.IsValid)
+                return View(custMessage);
 
-            return View();
-        }
+            // Create a message from the custMessage.
+            var message = new BrokeredMessage(custMessage);
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            try
+            {
+                // Submit the custMessage.
+                QueueConnector.MessagesQueueClient.Send(message);
+                ViewBag.Result = "Message sent successfully.";
+            }
+            catch (Exception e)
+            {
+                ViewBag.Result = "Error: " + e.Message;
+            }
 
-            return View();
+            return RedirectToAction("Index");
+
         }
     }
 }

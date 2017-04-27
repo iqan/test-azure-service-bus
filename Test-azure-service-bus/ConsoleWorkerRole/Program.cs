@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
 
 namespace ConsoleWorkerRole
 {
@@ -25,12 +26,13 @@ namespace ConsoleWorkerRole
                 {
                     Console.WriteLine("Processing message:");
                     Console.WriteLine(string.Format("Message id: {0}", message.MessageId));
-                    //var msg = message.GetBody<CustomMessage>();
+                    
+                    //CustomMessage msg = message.GetBody<CustomMessage>();
                     //Console.WriteLine("CustomerId: " + msg.CustomerId);
                     //Console.WriteLine("Name: " + msg.Name);
                     //Console.WriteLine("Message: " + msg.Message);
-                    Console.WriteLine("Processed at " + DateTime.Now);
-                    Console.WriteLine("-------------------------------------------");
+                    //Console.WriteLine("Processed at " + DateTime.Now);
+                    //Console.WriteLine("-------------------------------------------");
                     message.Complete();
                 });
             }

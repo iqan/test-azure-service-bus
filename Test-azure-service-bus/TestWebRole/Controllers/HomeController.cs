@@ -28,6 +28,7 @@ namespace TestWebRole.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult Index(CustomMessage custMessage)
         {
             if (!ModelState.IsValid)
@@ -40,11 +41,11 @@ namespace TestWebRole.Controllers
             {
                 // Submit the custMessage.
                 QueueConnector.MessagesQueueClient.Send(message);
-                ViewBag.Result = "Message sent successfully.";
+                TempData["Result"] = "Message sent successfully.";
             }
             catch (Exception e)
             {
-                ViewBag.Result = "Error: " + e.Message;
+                TempData["Result"] = "Error: " + e.Message;
             }
 
             return RedirectToAction("Index");

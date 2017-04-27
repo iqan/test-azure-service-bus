@@ -21,10 +21,10 @@
     <div class="form-horizontal">
         <h4>Send Message</h4>
         <hr />
-        @if (ViewBag.Result!=null)
+        @if (TempData["Result"] != null)
         {
             <p>
-                @ViewBag.Result
+                @TempData["Result"].ToString()
             </p>
         }
         <p>

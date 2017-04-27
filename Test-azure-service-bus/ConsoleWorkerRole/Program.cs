@@ -31,8 +31,9 @@ namespace ConsoleWorkerRole
                     //Console.WriteLine("CustomerId: " + msg.CustomerId);
                     //Console.WriteLine("Name: " + msg.Name);
                     //Console.WriteLine("Message: " + msg.Message);
-                    //Console.WriteLine("Processed at " + DateTime.Now);
-                    //Console.WriteLine("-------------------------------------------");
+
+                    Console.WriteLine("Processed at " + DateTime.Now);
+                    Console.WriteLine("-------------------------------------------");
                     message.Complete();
                 });
             }

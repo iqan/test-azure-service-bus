@@ -45,12 +45,22 @@
       <RoleName>TestWebRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\TestWorkerRole\TestWorkerRole.csproj">
+      <Name>TestWorkerRole</Name>
+      <Project>{fe7fa0df-455c-4449-abb9-b3d3a47f5948}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>TestWorkerRole</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestWebRoleContent\" />
+    <Folder Include="TestWorkerRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="TestWebRoleContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="TestWorkerRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

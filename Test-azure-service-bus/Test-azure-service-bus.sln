@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWorkerRole", "TestWorke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorkerRole", "ConsoleWorkerRole\ConsoleWorkerRole.csproj", "{2049343C-9419-469A-917C-B014A36B3589}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendBulkMessage", "SendBulkMessage\SendBulkMessage.csproj", "{B62050F3-BC26-4FDE-AE96-F08ABF579A9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{2049343C-9419-469A-917C-B014A36B3589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2049343C-9419-469A-917C-B014A36B3589}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2049343C-9419-469A-917C-B014A36B3589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B62050F3-BC26-4FDE-AE96-F08ABF579A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B62050F3-BC26-4FDE-AE96-F08ABF579A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B62050F3-BC26-4FDE-AE96-F08ABF579A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B62050F3-BC26-4FDE-AE96-F08ABF579A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

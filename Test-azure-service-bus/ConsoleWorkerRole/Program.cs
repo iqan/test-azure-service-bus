@@ -27,8 +27,9 @@ namespace ConsoleWorkerRole
                     Console.WriteLine("Processing message:");
                     Console.WriteLine(string.Format("Message id: {0}", message.MessageId));
                     var msg = message.GetBody<string>();
-
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("Message Body: " + msg);
+                    Console.ResetColor();
                     Console.WriteLine("Processed at " + DateTime.Now);
                     Console.WriteLine("-------------------------------------------");
                     message.Complete();
@@ -36,7 +37,9 @@ namespace ConsoleWorkerRole
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: "+ e.Message);
+                Console.ResetColor();
             }
             Console.ReadLine();
         }

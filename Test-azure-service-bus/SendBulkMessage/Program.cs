@@ -26,13 +26,19 @@ namespace SendBulkMessage
                 
                 for (int i = 0; i < c; i++)
                 {
-                    var msg = new BrokeredMessage(string.Format("Hi there! [Message]: {0}", i));
+                    var msg = new BrokeredMessage(string.Format("Hi there! [Message No.]: {0}", i+1));
+                    Console.Write(i+1+"...");
                     QueueConnector.MessagesQueueClient.Send(msg);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(" SENT !\r\n");
+                    Console.ResetColor();
                 }
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: " + e.Message);
+                Console.ResetColor();
             }
             Console.WriteLine("Done!");
             Console.ReadLine();   

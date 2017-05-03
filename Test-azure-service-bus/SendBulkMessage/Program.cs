@@ -13,17 +13,21 @@ namespace SendBulkMessage
     {
         public static void Main()
         {
-            var connectionString = "Endpoint=sb://iqanstest1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=kACru3WDbVWYmD5GEFF81sLIsgi+eyR9fjeO6+NWYpY=";
-            var queueName = "MessagesQueue";
+            Console.WriteLine("Initializing QueueClient...");
+            QueueConnector.Initialize();
+            Console.WriteLine("Done!");
+
             Console.WriteLine("Enter count: ");
             var count = Console.ReadLine();
             try
             {
                 int c = int.Parse(count);
-                var client = QueueClient.CreateFromConnectionString(connectionString, queueName);
+                
+                
                 for (int i = 0; i < c; i++)
                 {
-                    client.Send(new BrokeredMessage(string.Format("Hi there! [Message:{0}]", c)));   
+                    var msg = new BrokeredMessage(string.Format("Hi there! [Message]: {0}", i));
+                    QueueConnector.MessagesQueueClient.Send(msg);
                 }
             }
             catch (Exception e)

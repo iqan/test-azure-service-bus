@@ -26,12 +26,9 @@ namespace ConsoleWorkerRole
                 {
                     Console.WriteLine("Processing message:");
                     Console.WriteLine(string.Format("Message id: {0}", message.MessageId));
-                    
-                    //CustomMessage msg = message.GetBody<CustomMessage>();
-                    //Console.WriteLine("CustomerId: " + msg.CustomerId);
-                    //Console.WriteLine("Name: " + msg.Name);
-                    //Console.WriteLine("Message: " + msg.Message);
+                    var msg = message.GetBody<string>();
 
+                    Console.WriteLine("Message Body: " + msg);
                     Console.WriteLine("Processed at " + DateTime.Now);
                     Console.WriteLine("-------------------------------------------");
                     message.Complete();

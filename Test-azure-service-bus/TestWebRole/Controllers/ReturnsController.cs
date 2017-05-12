@@ -28,7 +28,7 @@ namespace TestWebRole.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = "Error connecting to the Service Bus";
+                ViewBag.Error = "Error connecting to the Service Bus. Error : " + e.Message;
             }
             return View();
         }

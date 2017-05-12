@@ -9,6 +9,10 @@ namespace TestWebRole.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController()
+        {
+            QueueConnector.Initialize();
+        }
         public ActionResult Index()
         {
             try
@@ -55,32 +59,33 @@ namespace TestWebRole.Controllers
 
         public ActionResult Process()
         {
-            var connectionString = "Endpoint=sb://iqanstest1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=kACru3WDbVWYmD5GEFF81sLIsgi+eyR9fjeO6+NWYpY=";
+            var connectionString =
+                "Endpoint=sb://iqanstest1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=kACru3WDbVWYmD5GEFF81sLIsgi+eyR9fjeO6+NWYpY=";
             var queueName = "MessagesQueue";
             var list = new List<string>();
+            var client = QueueClient.CreateFromConnectionString(connectionString, queueName);
 
-            try
+            client.OnMessage(message =>
             {
-                var client = QueueClient.CreateFromConnectionString(connectionString, queueName);
-
-                client.OnMessage(message =>
+                try
                 {
                     list.Add(string.Format("Message id: {0}", message.MessageId));
                     var msg = message.GetBody<CustomMessage>();
                     list.Add("CustomerId: " + msg.CustomerId);
                     list.Add("Name: " + msg.Name);
                     list.Add("Message: " + msg.Message);
-
+                    TempData["Output"] = list;
                     message.Complete();
                     client.Close();
-                });
-                TempData["Output"] = list;
-            }
-            catch (Exception e)
-            {
-                TempData["Err"] = "Error: " + e.Message;
-            }
-            
+                }
+                catch (Exception e)
+                {
+                    TempData["Err"] = "Error: " + e.Message;
+                    message.Abandon();
+                }
+
+            }); TempData["Output"] = list;
+
             return RedirectToAction("Index");
         }
     }

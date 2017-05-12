@@ -12,7 +12,6 @@ namespace TestWebRole
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Connector.QueueConnector.Initialize();
         }
     }
 }

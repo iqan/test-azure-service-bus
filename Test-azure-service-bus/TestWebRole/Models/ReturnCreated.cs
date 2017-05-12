@@ -10,6 +10,7 @@ namespace TestWebRole.Models
     }
     public class ReturnCreated
     {
+        [Required]
         public string Id { get; set; }
         [Required]
         public string ReturnReference { get; set; }

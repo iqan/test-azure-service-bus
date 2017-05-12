@@ -72,6 +72,7 @@ namespace TestWebRole.Controllers
                     list.Add("Message: " + msg.Message);
 
                     message.Complete();
+                    client.Close();
                 });
                 TempData["Output"] = list;
             }

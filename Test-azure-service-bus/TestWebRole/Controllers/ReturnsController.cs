@@ -9,7 +9,7 @@ namespace TestWebRole.Controllers
 {
     public class ReturnsController : Controller
     {
-        private CustomQueueConnector _connector;
+        private readonly CustomQueueConnector _connector;
         public ReturnsController()
         {
             _connector = new CustomQueueConnector("ReturnsQueue");

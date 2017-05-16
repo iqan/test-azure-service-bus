@@ -12,7 +12,7 @@ namespace TestWebRole.Controllers
         private readonly CustomQueueConnector _connector;
         public ReturnsController()
         {
-            _connector = new CustomQueueConnector("ReturnsQueue");
+            _connector = new CustomQueueConnector("ReturnsQueue", "ReturnCreatedTopic");
             _connector.Initialize();
         }
 
@@ -23,7 +23,8 @@ namespace TestWebRole.Controllers
                 var namespaceManager = _connector.CreateNamespaceManager();
 
                 var queue = namespaceManager.GetQueue(_connector.QueueName);
-                ViewBag.MessageCount = queue.MessageCount;
+                var topic = namespaceManager.GetTopic(_connector.TopicName);
+                ViewBag.MessageCount = queue.MessageCount + "... And Topic(ReturnCreatedTopic) Count: " + topic.MessageCountDetails.ActiveMessageCount;
                 ViewBag.QueueName = _connector.QueueName;
             }
             catch (Exception e)
@@ -34,29 +35,45 @@ namespace TestWebRole.Controllers
         }
 
         [HttpPost]
-        public ActionResult Send(ReturnCreated msg)
+        public ActionResult Send(ReturnCreated msg, bool isTopic)
         {
             if (!ModelState.IsValid)
                 return View(msg);
 
             msg.Timestamp = DateTime.Now;
-            var jsonMsg = JsonConvert.SerializeObject(msg,Formatting.Indented);
-            var message = new BrokeredMessage(jsonMsg);
 
-            try
+            if (isTopic)
             {
-                // Submit the custMessage.
-                _connector.MessagesQueueClient.Send(message);
-                TempData["Result"] = "Message sent successfully. (" + message.MessageId +")";
-                TempData["Out"] = jsonMsg;
+                try
+                {
+                    var client = _connector.TopicClient;
+                    var message = new BrokeredMessage(msg);
+                    message.Properties["type"] = "ReturnCreatedTopic";
+                    client.Send(message);
+                }
+                catch (Exception e)
+                {
+                    TempData["Result"] = "Error: " + e.Message;
+                }
             }
-            catch (Exception e)
+            else
             {
-                TempData["Result"] = "Error: " + e.Message;
-            }
+                var jsonMsg = JsonConvert.SerializeObject(msg, Formatting.Indented);
+                var message = new BrokeredMessage(jsonMsg);
 
+                try
+                {
+                    // Submit the custMessage.
+                    _connector.MessagesQueueClient.Send(message);
+                    TempData["Result"] = "Message sent successfully. (" + message.MessageId + ")";
+                    TempData["Out"] = jsonMsg;
+                }
+                catch (Exception e)
+                {
+                    TempData["Result"] = "Error: " + e.Message;
+                }
+            }
             return RedirectToAction("Send");
-
         }
     }
 }

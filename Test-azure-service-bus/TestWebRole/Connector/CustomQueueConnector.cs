@@ -6,19 +6,22 @@ namespace TestWebRole.Connector
 {
     public class CustomQueueConnector
     {
-        public CustomQueueConnector(string queueName)
+        public CustomQueueConnector(string queueName, string topicName)
         {
             QueueName = queueName;
+            TopicName = topicName;
         }
         // Thread-safe. Recommended that you cache rather than recreating it
         // on every request.
         public QueueClient MessagesQueueClient;
+        public TopicClient TopicClient;
 
         // Obtain these values from the portal.
         public const string Namespace = "iqanstest1";
 
         // The name of your queue.
         public string QueueName;
+        public string TopicName;
 
         public NamespaceManager CreateNamespaceManager()
         {
@@ -47,11 +50,19 @@ namespace TestWebRole.Connector
                 namespaceManager.CreateQueue(QueueName);
             }
 
+            //create Topic
+            if (!namespaceManager.TopicExists(TopicName))
+            {
+                namespaceManager.CreateTopic(TopicName);
+            }
+
             // Get a client to the queue.
             var messagingFactory = MessagingFactory.Create(
                 namespaceManager.Address,
                 namespaceManager.Settings.TokenProvider);
             MessagesQueueClient = messagingFactory.CreateQueueClient(QueueName);
+
+            TopicClient = messagingFactory.CreateTopicClient(TopicName);
         }
     }
 }
